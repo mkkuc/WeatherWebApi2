@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Weather App</title>
+</head>
+<body>
+    <div>
+        <h2>Weather Forecast</h2>
+        <table>
+            <tr>
+                <td>
+                    Country
+                </td>
+                <td>
+                    <input type="text" id="country" size="5" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    City
+                </td>
+                <td>
+                    <input type="text" id="city" size="5" />
+                </td>
+            </tr>
+        </table>
+        <input type="button" value="Check" onclick="find();" />
+        <p id="weather" />
+    </div>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        var uri = '';
+        function find() {
+            var country = $('#country').val();
+            var city = $('#city').val();
+            $.getJSON(uri + '/' + city + '/' + country)
+                .done(function (data) {
+                    var finalSolution = "<ul><li>Country: " + data.location.country + "</li><li>City: " + data.location.city +
+                        "</li><li>Temperature: " + data.temp.value + "</li><li>Format: " + data.temp.format + "</li><li>Humidity " +
+                        data.humidity.value + "</li></ul>";
+
+                    $('#weather').empty();
+                    $('#weather').append(finalSolution)
+                })
+                .fail(function (jqXHR, textStatus, err) {
+                    $('#weather').text('Error: ' + err);
+                });
+        }
+    </script>
+</body>
+</html>
