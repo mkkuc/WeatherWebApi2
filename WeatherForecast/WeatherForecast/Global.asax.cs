@@ -30,10 +30,19 @@ namespace WeatherForecast
 
             // OPTIONAL: Register the Autofac model binder provider.
             builder.RegisterWebApiModelBinderProvider();
-
+            /*
             builder.Register(c => new Country())
             .As<ICountry>()
             .InstancePerApiControllerType(typeof(WeatherController));
+            */
+            /* builder.Register(o => new OpenWeatherMap())
+             .As<IOpenWeatherMap>()
+             .InstancePerApiControllerType(typeof(WeatherController));
+             */
+
+
+            builder.RegisterType<Country>().As<ICountry>().InstancePerRequest();
+            builder.RegisterType<OpenWeatherMap>().As<IOpenWeatherMap>().InstancePerRequest();
 
             // Set the dependency resolver to be Autofac.
             var container = builder.Build();

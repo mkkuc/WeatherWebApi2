@@ -15,27 +15,31 @@ namespace WeatherForecast
         [Fact]
         public void IsGoodTypeNotNullGoodValuesTest()
         {
-            WeatherController testControl = new WeatherController();
+            //WeatherController testControl = new WeatherController();
 
-            IHttpActionResult testWeather = testControl.Get("Poland", "Warsaw");
-            Assert.IsType<OkNegotiatedContentResult<WeatherInfo>>(testWeather);
+            ICountry iCountry = new Country();
+            OpenWeatherMap openWeather = new OpenWeatherMap(iCountry);
+        
+            WeatherInfo testWeather = openWeather.GetWeather("Poland", "Warsaw");
+            Assert.IsType<WeatherInfo>(testWeather);
 
             Assert.NotNull(testWeather);
 
-            var contentResult = testWeather as OkNegotiatedContentResult<WeatherInfo>;
+           // var contentResult = testWeather as OkNegotiatedContentResult<WeatherInfo>;
 
-            Assert.True("Poland" == contentResult.Content.location.country);
-            Assert.True("Warsaw" == contentResult.Content.location.city);
-            Assert.True("Celsius" == contentResult.Content.temp.format);
+            Assert.True("Poland" == testWeather.location.country);
+            Assert.True("Warsaw" == testWeather.location.city);
+            Assert.True("Celsius" == testWeather.temp.format);
         }
 
         [Fact]
         public void NotFoundTest()
         {
-            WeatherController testControl = new WeatherController();
+            ICountry iCountry = new Country();
+            OpenWeatherMap openWeather = new OpenWeatherMap(iCountry);
 
-            IHttpActionResult testWeather = testControl.Get("ABCDEF", "GHIJKLM");
-            Assert.IsType<NotFoundResult>(testWeather);
+            WeatherInfo testWeather = openWeather.GetWeather("ABCDEF", "GHIJKLM");
+            Assert.Null(testWeather);
             
         }
     }
